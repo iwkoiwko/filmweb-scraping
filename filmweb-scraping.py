@@ -11,6 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By 
 from selenium.webdriver.chrome.options import Options
 import time
+import math
 import matplotlib.pyplot as plt
 start_time = time.time()
 def loading_data():
@@ -59,7 +60,7 @@ driver.maximize_window()
 
 body = driver.find_element(By.TAG_NAME, 'body')  
 
-time.sleep(5)
+time.sleep(18)
 
 
 
@@ -132,3 +133,20 @@ film_df.to_excel(r"C:\Users\Admin\Desktop\filmweb.xlsx")
 end_time = time.time()
 execution_time = end_time - start_time
 print(f"code execution time: ", execution_time)
+film_df.sort_values('year', ascending = True)
+plt.figure(1)
+
+mean_ratings_by_year = film_df.groupby('year')['rating'].mean()
+plt.plot(mean_ratings_by_year.index, mean_ratings_by_year.values)
+plt.xlabel("year")
+plt.ylabel("mean rating")
+plt.grid(True)
+
+plt.figure(2)
+year_counts = film_df['year'].value_counts().sort_index()
+plt.scatter(year_counts.index, year_counts.values)
+plt.xlabel("year")
+plt.ylabel("num of movies")
+plt.grid(True)
+
+plt.show()
